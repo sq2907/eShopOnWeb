@@ -37,7 +37,7 @@ steps:
    --github-url https://github.com \
    --github-auth $(GitHub Token) \
      with:
-    languages: ${{ matrix.language }}
+      languages: ${{ matrix.language }}
   displayName: 'Initialize CodeQL Executable and create a CodeQL database'
 
 - task: DotNetCoreCLI@2
