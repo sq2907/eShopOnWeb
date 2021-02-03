@@ -36,8 +36,6 @@ steps:
    --repository sq2907/eShopOnWeb \
    --github-url https://github.com \
    --github-auth $(GitHub Token) \
-     with:
-      languages: ${{ matrix.language }} \
   displayName: 'Initialize CodeQL Executable and create a CodeQL database'
 
 - task: DotNetCoreCLI@2
