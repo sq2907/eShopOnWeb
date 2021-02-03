@@ -21,17 +21,6 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
 
 - script: |
    wget https://github.com/github/codeql-action/releases/latest/download/codeql-runner-linux
@@ -44,11 +33,17 @@ steps:
    --github-url https://github.com \
    --github-auth $(GitHub Token) \
   displayName: 'Initialize CodeQL Executable and create a CodeQL database'
- 
-- task: MSBuild@1
+
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '**/*.sln'
-    clean: true
+    command: 'restore'
+    projects: '**/*.sln'
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.sln'
 
 - script: |
    ./codeql-runner-linux analyze \
